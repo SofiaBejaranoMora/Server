@@ -7,20 +7,27 @@ import { setupSocket } from './socket';
 
 const app = express();
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
-const PORT = Number(process.env.PORT) || 3000;
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://cliente-vi2d.vercel.app',
+  'https://cliente-vi2d-5o5mo1l5p-sofiabejaranom24-3145s-projects.vercel.app',
+];
 
 const server = http.createServer(app);
 
-app.use(cors({
-  origin: FRONTEND_URL,
-}));
-
 const io = new SocketIOServer(server, {
   cors: {
-    origin: FRONTEND_URL,
+    origin: allowedOrigins,
+    methods: ['GET', 'POST'],
   },
 });
+
+const PORT = Number(process.env.PORT) || 3000;
+
+app.use(cors({
+  origin: allowedOrigins,
+}));
 
 setupSocket(io);
 
