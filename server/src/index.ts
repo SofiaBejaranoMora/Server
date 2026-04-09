@@ -10,11 +10,15 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
-  'https://cliente-vi2d.vercel.app',
-  'https://cliente-vi2d-5o5mo1l5p-sofiabejaranom24-3145s-projects.vercel.app',
+  'https://client-vi2d.vercel.app',
+  'https://client-vi2d-5o5mo1l5p-sofiabejaranom24-3145s-projects.vercel.app',
 ];
 
 const server = http.createServer(app);
+
+app.use(cors({
+  origin: allowedOrigins,
+}));
 
 const io = new SocketIOServer(server, {
   cors: {
@@ -24,10 +28,6 @@ const io = new SocketIOServer(server, {
 });
 
 const PORT = Number(process.env.PORT) || 3000;
-
-app.use(cors({
-  origin: allowedOrigins,
-}));
 
 setupSocket(io);
 
